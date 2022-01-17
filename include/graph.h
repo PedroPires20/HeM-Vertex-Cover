@@ -33,7 +33,8 @@ public:
     // Remove o vértice cujo identificador é dado como argumento do grafo
     void remove_vertex(int vertex_id);
     // Retorna um objeto do tipo "Vertex" representando o vértice cujo identificador é dado
-    const Vertex& vertex_at(int id) const;
+    const Vertex& vertex_at(size_t id) const;
+    Vertex& vertex_at(size_t id);
     // Adiciona uma aresta não direcionada entre os vértices de índices "origin_id" e "destination_id"
     void add_edge(int origin_id, int destination_id);
     // Remove a aresta entre os vértices cujos identificadores são "origin_id" e "destination_id"
@@ -54,6 +55,16 @@ public:
     int num_vertexes() const;
     // Retorna o número de arestas do grafo
     int num_edges() const;
+    // Sobrecarregando o operador [] para retornar o vértice na posição dada
+    inline Vertex& operator[](size_t pos) {
+        return vertex_at(pos);
+    }
+
+    inline const Vertex& operator[](size_t pos) const {
+        return vertex_at(pos);
+    }
+    // Retorna o complemento do grafo atual
+    Graph complement() const;
 private:
 
     vector<Vertex> vertexes_;

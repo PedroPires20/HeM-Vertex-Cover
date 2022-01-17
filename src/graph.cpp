@@ -38,8 +38,14 @@ void Graph::remove_vertex(int vertex_id) {
     vertexes_.erase(vertexes_.begin() + vertex_id);
 }
 
-const Vertex& Graph::vertex_at(int id) const {
-    if(id >= (int)vertexes_.size())
+Vertex& Graph::vertex_at(size_t id) {
+    if(id >= vertexes_.size())
+        throw VertexNotFoundException("Erro ao recuperar o vértice de índice" + to_string(id) + ": vértice não encontrado no grafo!");
+    return vertexes_[id];
+}
+
+const Vertex& Graph::vertex_at(size_t id) const {
+    if(id >= vertexes_.size())
         throw VertexNotFoundException("Erro ao recuperar o vértice de índice" + to_string(id) + ": vértice não encontrado no grafo!");
     return vertexes_[id];
 }
@@ -97,4 +103,23 @@ int Graph::num_edges() const {
         n_edges += v.degree();
     }
     return n_edges / 2;
+}
+
+Graph Graph::complement() const  {
+    size_t n = vertexes_.size();
+    vector<bool> neighbors_complement(n, true);
+    vector<int> c_neighbors;
+    Graph complement;
+    c_neighbors.reserve(n);
+    for(size_t i = 0; i < n; i++) {
+        for(int j : vertexes_[i].neighbors())
+            neighbors_complement[j] = false;
+        for(size_t k = 0; k < n; k++)
+            if(neighbors_complement[k])
+                c_neighbors.emplace_back(k);
+        complement.vertexes_.emplace_back(i, c_neighbors);
+        c_neighbors.clear();
+        neighbors_complement = vector<bool>(n, true);
+    }
+    return complement;
 }
