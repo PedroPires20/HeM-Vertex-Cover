@@ -21,7 +21,7 @@ const char* VertexNotFoundException::what() const noexcept {
 
 Graph::Graph(size_t num_vertexes) {
     vertexes_ = {};
-    for(int i = 0; i < num_vertexes; i++)
+    for(int i = 0; i < static_cast<long long>(num_vertexes); i++)
         vertexes_.emplace_back(i, vector<int>());
 }
 
