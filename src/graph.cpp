@@ -112,6 +112,7 @@ Graph Graph::complement() const  {
     Graph complement;
     c_neighbors.reserve(n);
     for(size_t i = 0; i < n; i++) {
+        neighbors_complement[i] = false;
         for(int j : vertexes_[i].neighbors())
             neighbors_complement[j] = false;
         for(size_t k = 0; k < n; k++)
