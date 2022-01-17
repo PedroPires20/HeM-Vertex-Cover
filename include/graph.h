@@ -26,6 +26,8 @@ public:
 */
 class Graph {
 public:
+    // Cria um novo grafo com o número de vértices dado
+    Graph(size_t num_vertexes);
     // Cria um novo grafo a partir da lista de vértices dada (por padrão, vazia)
     Graph(const vector<Vertex>& vertex_list = {});
     // Adiciona um vértice no grafo com os vizinhos dados. Retorna o id do vértice adicionado

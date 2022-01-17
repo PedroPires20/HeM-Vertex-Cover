@@ -19,6 +19,12 @@ const char* VertexNotFoundException::what() const noexcept {
     return message_;
 }
 
+Graph::Graph(size_t num_vertexes) {
+    vertexes_ = {};
+    for(int i = 0; i < num_vertexes; i++)
+        vertexes_.emplace_back(i, vector<int>());
+}
+
 Graph::Graph(const vector<Vertex>& vertex_list) {
     int num_vertexes = vertex_list.size();
     vertexes_ = vector<Vertex>();
