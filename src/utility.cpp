@@ -12,6 +12,20 @@ inline bool is_switch(const char* str) {
     return (strlen(str) == 2)? str[0] == '-': false;
 }
 
+Strategies strategy_from_str(const char* str) {
+    string input(str);
+    for(char& c : input)
+        c = tolower(c);
+    if(input == "list right") {
+        return Strategies::list_right;
+    }else if(input == "grasp deg") {
+        return Strategies::grasp_deg;
+    }else if(input == "grasp weideg") {
+        return Strategies::grasp_weideg;
+    }
+    throw std::runtime_error("Estratégia \""s + str + "\" não reconhecida!\nAs estratégias (algoritmos) disponíveis são: List Right, GRASP DEG, GRASP WEIDEG");
+}
+
 Arguments parse_arguments(int argc, char** argv) {
     Arguments args;
     if(argc < MIN_EXPECTED_ARGS + 1) 
@@ -22,7 +36,7 @@ Arguments parse_arguments(int argc, char** argv) {
                 throw std::runtime_error("O número de argumentos fornecidos não é suficiente.");
             switch(argv[i][1]) {
                 case 'i': args.input_path = argv[i + 1]; break;
-                case 's': args.strategy_name = argv[i + 1]; break;
+                case 's': args.algorithm = strategy_from_str(argv[i + 1]); break;
                 case 'a': args.alpha = atof(argv[i + 1]); break;
                 case 'r': args.reps = atoi(argv[i + 1]); break;
                 default: throw std::runtime_error("Modificador "s + argv[i] + " não reconhecido.");

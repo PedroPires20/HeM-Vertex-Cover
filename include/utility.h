@@ -6,9 +6,11 @@
 
 using std::string;
 
+enum class Strategies { list_right, grasp_deg, grasp_weideg };
 
 struct Arguments {
-    string input_path, strategy_name;
+    string input_path;
+    Strategies algorithm;
     double alpha;
     int reps;
 };
