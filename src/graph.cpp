@@ -78,7 +78,8 @@ vector<tuple<int, int>> Graph::edge_list() const {
     vector<tuple<int, int>> edges;
     for(size_t i = 0; i < vertexes_.size(); i++) {
         for(int j : vertexes_[i].neighbors()) {
-            edges.emplace_back(i, j);
+            if(j > i)
+                edges.emplace_back(i, j);
         }
     }
     return edges;
