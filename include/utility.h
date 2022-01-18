@@ -32,4 +32,15 @@ double deviation(const vector<double>& data);
 
 void print_results(const Arguments& args, const InstanceInfo& instance, const vector<double>& results);
 
+/*
+    Essa função amostra os resultados da execução do GRASP, executando a função (f) dada como parâmetro,
+    que deve retornar um inteiro e receber, como parâmetro, os dados da instância e um real com o valor,
+    do parâmetro alpha, isto é, a assinatura da função deve ser int f(const InstanceInfo&, double). A 
+    função f é executada pelo número de vezes especificado pelo inteiro positivo (reps) e os resultados 
+    retornados são convertidos para reais (double) e armazenados em um vetor, que é retornado como 
+    resultado.
+*/
+vector<double> sample_results(int reps, int(*f)(const InstanceInfo&, double), const InstanceInfo& instance, double alpha);
+
+
 #endif

@@ -192,3 +192,11 @@ void print_results(const Arguments& args, const InstanceInfo& instance, const ve
         cout << "Desvio padrão das coberturas encontradas: " << sigma << endl;
     
 }
+
+vector<double> sample_results(int reps, int(*f)(const InstanceInfo&, double), const InstanceInfo& instance, double alpha) {
+    vector<double> results;
+    results.reserve(reps);
+    for(int i = 0; i < reps; i++)
+        results.emplace_back(static_cast<double>(f(instance, alpha)));
+    return results;
+}
