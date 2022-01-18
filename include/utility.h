@@ -21,5 +21,6 @@ struct InstanceInfo {
 
 InstanceInfo parse_input_file(const string& file_path);
 
+void export_graph_edgelist(const string& output_file_path, const Graph& g);
 
 #endif

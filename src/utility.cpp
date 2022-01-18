@@ -4,7 +4,7 @@
 #include "../include/utility.h"
 
 using namespace std::string_literals;
-using std::ifstream;
+using std::ifstream, std::ofstream;
 using std::getline;
 
 inline bool is_switch(const char* str) {
@@ -112,4 +112,20 @@ InstanceInfo parse_input_file(const string& file_path) {
     }
     input_file.close();
     return data;
+}
+
+void export_graph_edgelist(const string& output_file_path, const Graph& g) {
+    ofstream output_file;
+    try{
+        output_file.open(output_file_path);
+        if(!output_file.is_open())
+            throw std::runtime_error(strerror(errno));
+    }catch(std::exception& e) {
+        throw std::runtime_error("Failed to write the output file: "s + e.what());
+    }
+    for(const Vertex& v : g.vertex_list()) 
+        for(const int j : v.neighbors())
+            if(j > v.id())
+                output_file << v.id() << " " << j << std::endl;
+    output_file.close();
 }
