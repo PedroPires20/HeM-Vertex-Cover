@@ -17,6 +17,8 @@ struct Arguments {
 
 Arguments parse_arguments(int argc, char** argv);
 
+void validate_arguments(const Arguments& args);
+
 struct InstanceInfo {
     size_t num_vertexes, num_edges;
     Graph graph;

@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include "../include/utility.h"
+#define MAX_REPS 100000
 
 using namespace std::string_literals;
 using std::ifstream, std::ofstream;
@@ -40,6 +41,9 @@ const char* strategy_name(Strategies s) {
 Arguments parse_arguments(int argc, char** argv) {
     Arguments args;
     string instance_name;
+    // Definindo valores padrão para os argumentos alpha e reps
+    args.alpha = 0;
+    args.reps = 1;
     if(argc < MIN_EXPECTED_ARGS + 1) 
         throw std::runtime_error("O número de argumentos fornecidos não é suficiente.");
     for(int i = 1; i < argc; i++) {
@@ -62,6 +66,17 @@ Arguments parse_arguments(int argc, char** argv) {
     instance_name = instance_name.substr(0, instance_name.find_first_of('.'));
     args.instance_name = instance_name;
     return args;
+}
+
+void validate_arguments(const Arguments& args) {
+    if(args.input_path == "")
+        throw std::runtime_error("Nenhum caminho foi fornecido para o arquivo da instância a ser resolvida.");
+    if(args.algorithm != Strategies::list_right) {
+        if(args.alpha < 0 || args.alpha > 1)
+            throw std::runtime_error("O valor fornecido para o parâmetro alpha ("s + std::to_string(args.alpha) + ") é inválido.\nO parâmetro alpha deve estar no intervalo [0,1].");
+        if(args.reps <= 0 || args.reps > MAX_REPS)
+            throw std::runtime_error("O número de repetições fornecido ("s + std::to_string(args.reps) + ") é inválido.\nO número de repetições deve ser positivo e não exceder "s + std::to_string(MAX_REPS) + ".");
+    }
 }
 
 string trim(const string& s) {

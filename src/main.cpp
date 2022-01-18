@@ -25,6 +25,7 @@ int main(int argc, char* argv[]) {
     vector<double> results;
     try {
         Arguments args = parse_arguments(argc, argv);
+        validate_arguments(args);
         InstanceInfo instance = parse_input_file(args.input_path);
         switch(args.algorithm) {
             case Strategies::list_right: results = { static_cast<double>(lr(instance)) }; break;
