@@ -76,7 +76,7 @@ void Graph::remove_edge(int origin_id, int destination_id) {
 
 vector<tuple<int, int>> Graph::edge_list() const {
     vector<tuple<int, int>> edges;
-    for(size_t i = 0; i < vertexes_.size(); i++) {
+    for(int i = 0; i < static_cast<long long>(vertexes_.size()); i++) {
         for(int j : vertexes_[i].neighbors()) {
             if(j > i)
                 edges.emplace_back(i, j);
