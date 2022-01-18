@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include <cstring>
 #include <fstream>
+#include <cmath>
 #include "../include/utility.h"
 
 using namespace std::string_literals;
@@ -23,6 +24,7 @@ Arguments parse_arguments(int argc, char** argv) {
                 case 'i': args.input_path = argv[i + 1]; break;
                 case 's': args.strategy_name = argv[i + 1]; break;
                 case 'a': args.alpha = atof(argv[i + 1]); break;
+                case 'r': args.reps = atoi(argv[i + 1]); break;
                 default: throw std::runtime_error("Modificador "s + argv[i] + " não reconhecido.");
             }
             i++;
@@ -121,11 +123,26 @@ void export_graph_edgelist(const string& output_file_path, const Graph& g) {
         if(!output_file.is_open())
             throw std::runtime_error(strerror(errno));
     }catch(std::exception& e) {
-        throw std::runtime_error("Failed to write the output file: "s + e.what());
+        throw std::runtime_error("Erro ao escrever o arquivo de saída: "s + e.what());
     }
     for(const Vertex& v : g.vertex_list()) 
         for(const int j : v.neighbors())
             if(j > v.id())
                 output_file << v.id() << " " << j << std::endl;
     output_file.close();
+}
+
+double mean(const vector<double>& data) {
+    double sum = 0;
+    for(const double& d : data)
+        sum += d;
+    return sum / data.size();
+}
+
+double deviation(const vector<double>& data) {
+    double mu = mean(data), var = 0;
+    for(const double& d : data)
+        var += (d - mu) * (d - mu);
+    var /= data.size();
+    return sqrt(var);
 }
