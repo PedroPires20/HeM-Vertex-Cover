@@ -2,11 +2,13 @@
 #include <cstring>
 #include <fstream>
 #include <cmath>
+#include <iostream>
 #include "../include/utility.h"
 
 using namespace std::string_literals;
 using std::ifstream, std::ofstream;
 using std::getline;
+using std::cout, std::endl;
 
 inline bool is_switch(const char* str) {
     return (strlen(str) == 2)? str[0] == '-': false;
@@ -16,18 +18,28 @@ Strategies strategy_from_str(const char* str) {
     string input(str);
     for(char& c : input)
         c = tolower(c);
-    if(input == "list right") {
+    if(input == "lr") {
         return Strategies::list_right;
-    }else if(input == "grasp deg") {
+    }else if(input == "gd") {
         return Strategies::grasp_deg;
-    }else if(input == "grasp weideg") {
+    }else if(input == "gw") {
         return Strategies::grasp_weideg;
     }
-    throw std::runtime_error("Estratégia \""s + str + "\" não reconhecida!\nAs estratégias (algoritmos) disponíveis são: List Right, GRASP DEG, GRASP WEIDEG");
+    throw std::runtime_error("Estratégia \""s + str + "\" não reconhecida!\nAs estratégias (algoritmos) disponíveis são: List Right (lr), GRASP DEG (gd), GRASP WEIDEG (gw)");
 }
+
+const char* strategy_name(Strategies s) {
+    switch(s) {
+    case Strategies::list_right: return "List Right";
+    case Strategies::grasp_deg: return "GRASP com heurística gulosa (DEG)";
+    case Strategies::grasp_weideg: return "GRASP com heurística gulosa modificada (WEIDEG)";
+    }
+    return "";
+} 
 
 Arguments parse_arguments(int argc, char** argv) {
     Arguments args;
+    string instance_name;
     if(argc < MIN_EXPECTED_ARGS + 1) 
         throw std::runtime_error("O número de argumentos fornecidos não é suficiente.");
     for(int i = 1; i < argc; i++) {
@@ -46,6 +58,9 @@ Arguments parse_arguments(int argc, char** argv) {
             throw std::runtime_error("O formato dos argumentos fornecidos é incorreto.");
         }
     }
+    instance_name = args.input_path.substr(args.input_path.find_last_of("/\\") + 1);
+    instance_name = instance_name.substr(0, instance_name.find_first_of('.'));
+    args.instance_name = instance_name;
     return args;
 }
 
@@ -159,4 +174,21 @@ double deviation(const vector<double>& data) {
         var += (d - mu) * (d - mu);
     var /= data.size();
     return sqrt(var);
+}
+
+void print_results(const Arguments& args, const InstanceInfo& instance, const vector<double>& results) {
+    const double mu = mean(results), sigma = deviation(results);
+    const bool is_mean = args.algorithm != Strategies::list_right;
+    cout << "Nome da instância resolvida: " << args.instance_name << endl;
+    cout << "Número de vértices: " << instance.num_vertexes << endl;
+    cout << "Número de arestas: " << instance.num_edges << endl;
+    cout << "Heurística utilizada: " << strategy_name(args.algorithm) << endl;
+    if(is_mean) {
+        cout << "Valor do parâmetro (alpha) utilizado: " << args.alpha << endl;
+        cout << "Número de execuções do algoritmo: " << args.reps << endl;
+    }
+    cout << "Tamanho da cobertura" << (is_mean? " (média)": "") << " encontrada: " << mu << endl;
+    if(is_mean)
+        cout << "Desvio padrão das coberturas encontradas: " << sigma << endl;
+    
 }

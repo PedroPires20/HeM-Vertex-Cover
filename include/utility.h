@@ -9,7 +9,7 @@ using std::string;
 enum class Strategies { list_right, grasp_deg, grasp_weideg };
 
 struct Arguments {
-    string input_path;
+    string input_path, instance_name;
     Strategies algorithm;
     double alpha;
     int reps;
@@ -29,5 +29,7 @@ void export_graph_edgelist(const string& output_file_path, const Graph& g);
 double mean(const vector<double>& data);
 
 double deviation(const vector<double>& data);
+
+void print_results(const Arguments& args, const InstanceInfo& instance, const vector<double>& results);
 
 #endif
