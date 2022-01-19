@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cmath>
 #include <iostream>
+#include <algorithm>
 #include "../include/utility.h"
 #define MAX_REPS 100000
 
@@ -10,6 +11,7 @@ using namespace std::string_literals;
 using std::ifstream, std::ofstream;
 using std::getline;
 using std::cout, std::endl;
+using std::min_element;
 
 inline bool is_switch(const char* str) {
     return (strlen(str) == 2)? str[0] == '-': false;
@@ -193,19 +195,21 @@ double deviation(const vector<double>& data) {
 
 void print_results(const Arguments& args, const InstanceInfo& instance, const vector<double>& results) {
     const double mu = mean(results), sigma = deviation(results);
-    const bool is_mean = args.algorithm != Strategies::list_right;
+    const bool is_random = args.algorithm != Strategies::list_right;
+
     cout << "Nome da instância resolvida: " << args.instance_name << endl;
     cout << "Número de vértices: " << instance.num_vertexes << endl;
     cout << "Número de arestas: " << instance.num_edges << endl;
     cout << "Heurística utilizada: " << strategy_name(args.algorithm) << endl;
-    if(is_mean) {
+    if(is_random) {
         cout << "Valor do parâmetro (alpha) utilizado: " << args.alpha << endl;
         cout << "Número de execuções do algoritmo: " << args.reps << endl;
     }
-    cout << "Tamanho da cobertura" << (is_mean? " (média)": "") << " encontrada: " << mu << endl;
-    if(is_mean)
+    cout << "Tamanho da cobertura" << (is_random? " (média)": "") << " encontrada: " << mu << endl;
+    if(is_random) {
+        cout << "Tamanho da menor cobertura encontrada: " << *min_element(results.begin(), results.end()) << endl;
         cout << "Desvio padrão das coberturas encontradas: " << sigma << endl;
-    
+    }
 }
 
 vector<double> sample_results(int reps, int(*f)(const InstanceInfo&, double), const InstanceInfo& instance, double alpha) {
