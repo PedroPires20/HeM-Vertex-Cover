@@ -38,12 +38,6 @@ int Graph::add_vertex(const vector<int>& neighbors) {
     return vertexes_.size() - 1;
 }
 
-void Graph::remove_vertex(int vertex_id) {
-    if(vertex_id >= (int)vertexes_.size())
-        throw VertexNotFoundException("Erro ao remover o vértice de índice " + to_string(vertex_id) + ": vértice não encontrado no grafo!");
-    vertexes_.erase(vertexes_.begin() + vertex_id);
-}
-
 Vertex& Graph::vertex_at(size_t id) {
     if(id >= vertexes_.size())
         throw VertexNotFoundException("Erro ao recuperar o vértice de índice" + to_string(id) + ": vértice não encontrado no grafo!");
@@ -61,8 +55,8 @@ void Graph::add_edge(int origin_id, int destination_id) {
         throw VertexNotFoundException("Erro ao adicionar a aresta (" + to_string(origin_id) + ", " + to_string(destination_id) + ": o vértice de origem não existe!");
     if(destination_id >= (int)vertexes_.size())
         throw VertexNotFoundException("Erro ao adicionar a aresta (" + to_string(origin_id) + ", " + to_string(destination_id) + ": o vértice de destino não existe!");
-    vertexes_[origin_id].add_neighboor(destination_id);
-    vertexes_[destination_id].add_neighboor(origin_id);
+    vertexes_[origin_id].add_neighbor(destination_id);
+    vertexes_[destination_id].add_neighbor(origin_id);
 }
 
 void Graph::remove_edge(int origin_id, int destination_id) {
@@ -70,8 +64,8 @@ void Graph::remove_edge(int origin_id, int destination_id) {
         throw VertexNotFoundException("Erro ao remover a aresta (" + to_string(origin_id) + ", " + to_string(destination_id) + ": o vértice de origem não existe!");
     if(destination_id >= (int)vertexes_.size())
         throw VertexNotFoundException("Erro ao remover a aresta (" + to_string(origin_id) + ", " + to_string(destination_id) + ": o vértice de destino não existe!");
-    vertexes_[origin_id].remove_neighboor(destination_id);
-    vertexes_[destination_id].remove_neighboor(origin_id);
+    vertexes_[origin_id].remove_neighbor(destination_id);
+    vertexes_[destination_id].remove_neighbor(origin_id);
 }
 
 vector<tuple<int, int>> Graph::edge_list() const {
@@ -127,7 +121,7 @@ Graph Graph::complement() const  {
                 c_neighbors.emplace_back(k);
         complement.vertexes_.emplace_back(i, c_neighbors);
         c_neighbors.clear();
-        neighbors_complement = vector<bool>(n, true);
+        neighbors_complement.assign(n, true);
     }
     return complement;
 }

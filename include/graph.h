@@ -32,8 +32,6 @@ public:
     Graph(const vector<Vertex>& vertex_list = {});
     // Adiciona um vértice no grafo com os vizinhos dados. Retorna o id do vértice adicionado
     int add_vertex(const vector<int>& neighbors = {});
-    // Remove o vértice cujo identificador é dado como argumento do grafo
-    void remove_vertex(int vertex_id);
     // Retorna um objeto do tipo "Vertex" representando o vértice cujo identificador é dado
     const Vertex& vertex_at(size_t id) const;
     Vertex& vertex_at(size_t id);

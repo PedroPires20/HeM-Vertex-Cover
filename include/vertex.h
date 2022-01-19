@@ -18,18 +18,18 @@ public:
         return neighbors_;
     }
 
-    inline void add_neighboor(int vertex_id) {
+    inline void add_neighbor(int vertex_id) {
         neighbors_.push_back(vertex_id);
     }
 
-    void remove_neighboor(int vertex_id) {
+    void remove_neighbor(int vertex_id) {
         for(auto it = neighbors_.begin(); it != neighbors_.end(); it++) {
             if(*it == vertex_id)
                 neighbors_.erase(it++);
         }
     }
     
-    inline void clear_neighboors() {
+    inline void clear_neighbors() {
         neighbors_.clear();
     }
     
