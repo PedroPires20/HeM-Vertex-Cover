@@ -1,5 +1,5 @@
 CXX := g++
-CXX_FLAGS := -std=c++17 -Wall -ggdb
+CXX_FLAGS := -std=c++17 -Wall -O2
 EXEC_NAME := MVCSolver
 
 all: main
