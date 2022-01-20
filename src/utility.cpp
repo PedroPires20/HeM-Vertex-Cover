@@ -162,7 +162,7 @@ InstanceInfo parse_input_file(const string& file_path) {
     return data;
 }
 
-void export_graph_edgelist(const string& output_file_path, const Graph& g) {
+void export_instance(const string& output_file_path, const InstanceInfo& instance) {
     ofstream output_file;
     try{
         output_file.open(output_file_path);
@@ -171,10 +171,11 @@ void export_graph_edgelist(const string& output_file_path, const Graph& g) {
     }catch(std::exception& e) {
         throw std::runtime_error("Erro ao escrever o arquivo de saída: "s + e.what());
     }
-    for(const Vertex& v : g.vertex_list()) 
+    output_file << "p edge " << instance.num_vertexes << " " << instance.num_edges << std::endl;
+    for(const Vertex& v : instance.graph.vertex_list()) 
         for(const int j : v.neighbors())
-            if(j > v.id())
-                output_file << v.id() << " " << j << std::endl;
+            if(j > v.id()) // Evitando exportar a mesma aresta {i, j} duas vezes trocando i e j de lugar
+                output_file << "e " << v.id() + 1 << " " << j + 1 << std::endl;
     output_file.close();
 }
 
