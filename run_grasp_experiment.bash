@@ -14,9 +14,8 @@ mkdir -p "out/GRASPEXP-${greedy_algo}"
 for alpha in ${alphas[@]}; do
     for instance in in/*.clq; do
         instance_file=$(basename ${instance})
-        instance_name="${instance_file%.*}"
+        instance_name=$(basename ${instance} .clq)
         output_file="out/GRASPEXP-${greedy_algo}/${instance_name}-${alpha}.out"
-        echo "alpha=${alpha} reps=${reps}"
         { time ./bin/MVCSolver -i ${instance} -s ${greedy_algo} -a ${alpha} -r ${reps}; } 2>&1 | tee ${output_file}
     done;
 done;

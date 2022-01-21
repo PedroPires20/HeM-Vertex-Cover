@@ -11,7 +11,7 @@ alpha=0.5 # Define o valor de alpha
 reps=100 # Define o número de repetições
 for instance in in/*.clq; do
     instance_file=$(basename ${instance})
-    instance_name="${instance_file%.*}"
+    instance_name=$(basename ${instance} .clq)
     output_file="out/GRASP-GD/${instance_name}.out"
     { time ./bin/MVCSolver -i ${instance} -s gd -a ${alpha} -r ${reps}; } 2>&1 | tee ${output_file}
 done;
